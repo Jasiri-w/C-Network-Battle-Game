@@ -18,6 +18,7 @@
 #define BUFFER_SIZE 1024
 #define GRID_ROWS 5
 #define GRID_COLS 5
+#define MAX_CHAT_LENGTH 256
 
 typedef struct {
     int x, y;

@@ -9,7 +9,7 @@
  * 4. Spawn a thread to receive and display the updated game state from the server.
  *
  * Compile:
- *   gcc client.c -o client -pthread    
+ *   gcc client.c -o client -pthread
  *
  * Usage:
  *   ./client <SERVER_IP> <PORT>
@@ -24,6 +24,8 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <errno.h>
+
 
 #define BUFFER_SIZE 1024
 
@@ -35,7 +37,6 @@ int g_serverSocket = -1;
  *---------------------------------------------------------------------------*/
 void *receiverThread(void *arg) {
     (void)arg; // unused
-
     char buffer[BUFFER_SIZE];
 
     while (1) {
@@ -53,7 +54,7 @@ void *receiverThread(void *arg) {
     }
 
     close(g_serverSocket);
-    exit(0);
+    exit(0); // Kill the whole client if disconnected
     return NULL;
 }
 
@@ -129,6 +130,7 @@ int main(int argc, char *argv[]) {
 
         // If QUIT => break
         if (strncmp(command, "QUIT", 4) == 0) {
+            printf("Quitting the game...\n");
             break;
         }
     }
